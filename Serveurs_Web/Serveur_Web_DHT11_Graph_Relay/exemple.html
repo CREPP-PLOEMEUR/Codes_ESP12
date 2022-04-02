@@ -1,0 +1,38 @@
+
+<html>  
+	<head>    
+		
+		<title>Serveur Web CREPP</title>    
+		<meta charset="utf-8"/>     
+		<meta http-equiv="refresh" content="5">    
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">    
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>      
+
+	</head>  
+	
+	<body style="margin-left:5%;">    
+		
+		<h1>Led ESP8266</h1><br>    
+		<h3>Contrôle de la LED sur la broche <span class="badge badge-secondary">D4</span></h3><br>      
+		
+		<a href="/?LED=ON"><button class="btn btn-success">Allumer</button></a>      
+		<a href="/?LED=OFF"><button class="btn btn-danger">Eteindre</button></a><br><br>    
+		
+		<h3>Mesure de la température et humidité avec le module DHT11 sur la broche <span class="badge badge-secondary">D2</span></h3><br>      
+
+		
+		>>> <b>Température</b> : 34.00 °C<br>      
+		>>> <b>Humidité</b> : 16.00%      
+		
+		<div style="max-width:50%;">
+			<canvas id="myChart" width="200" height="100"></canvas>   
+		</div>
+	
+		<script>    
+			var ctx = document.getElementById('myChart'); 
+			var values = [21, 22, 22, 21, 22];
+			var time = [4,3,2,1,0];
+			var myChart = new Chart(ctx, { type: 'line', data: { labels: time, datasets: [{ label: 'Temperature', data: values,  borderColor: 'blue',backgroundColor: '', fill: 0 }], }});
+		</script>  
+	
+	</body></html>
