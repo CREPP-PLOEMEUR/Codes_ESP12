@@ -22,8 +22,8 @@ const char* ssid     = "creafab_invite";//Nom du routeur sur le réseau (par Exe
 const char* password = "MonTraficEstJournalise"; //Mot de passe du routeur
 */
 
-const char* ssid     = "Freebox-47689C";//Nom du routeur sur le réseau (par Exemple FReebox-44F45)
-const char* password = "oshysi5ttialourtylop"; //Mot de passe du routeur
+const char* ssid     = "name";//Nom du routeur sur le réseau (par Exemple FReebox-44F45)
+const char* password = "password"; //Mot de passe du routeur
 
 
 //Page principale
