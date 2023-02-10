@@ -1,3 +1,13 @@
+/*
+
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * version 2 as published by the Free Software Foundation.
+
+ * Programme pour le contrôle d'un serveur Web qui affiche la température et l'humidité sur une page Web avec un graphique
+ * par Club de Robotique et d'Électronique Programmable de Ploemeur
+
+ */
 #include <ESP8266WiFi.h>
 #include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>

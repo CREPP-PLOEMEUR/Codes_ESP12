@@ -1,3 +1,14 @@
+/*
+
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * version 2 as published by the Free Software Foundation.
+
+ * Programme pour le contrôle d'un serveur Web qui affiche la température et l'humidité sur une page Web avec un graphique
+ * Possibilité de contrôler un relai
+ * par Club de Robotique et d’Électronique Programmable de Ploemeur
+
+ */
 #include <ESP8266WiFi.h>
 #include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>
@@ -20,10 +31,6 @@
 //#define DHTTYPE DHT11   
 #define DHTTYPE DHT22  
 //#define DHTTYPE DHT21 
-/*
-const char* ssid     = "Freebox-47689C";//Nom du routeur sur le réseau (par Exemple FReebox-44F45)
-const char* password = "oshysi5ttialourtylop"; //Mot de passe du routeur
-*/
 
 const char* ssid     = "creafab_invite";//Nom du routeur sur le réseau (par Exemple FReebox-44F45)
 const char* password = "MonTraficEstJournalise"; //Mot de passe du routeur

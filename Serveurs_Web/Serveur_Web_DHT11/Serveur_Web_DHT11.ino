@@ -4,9 +4,8 @@
  * modify it under the terms of the GNU General Public License
  * version 2 as published by the Free Software Foundation.
 
- * Programme pour le controle d'un serveur Web qui affiche la température et l'humidité sur une page Web
- * par Club de Robotique et d'Electronique Programmable de Ploemeur
- * Autorisation de redistribuer et modifier le code sous les termes de la Licence GNU-GPL 
+ * Programme pour le contrôle d'un serveur Web qui affiche la température et l'humidité sur une page Web
+ * par Club de Robotique et d'Électronique Programmable de Ploemeur
 
  */
 #include <ESP8266WiFi.h>
@@ -38,8 +37,8 @@ const char* password = "MonTraficEstJournalise"; //Mot de passe du routeur
 float temperature = 20.0;
 float humidity = 50.0;
 
-const char* ssid     = "Freebox-47689C";//Nom du routeur sur le réseau (par Exemple FReebox-44F45)
-const char* password = "oshysi5ttialourtylop"; //Mot de passe du routeur
+const char* ssid     = "creafab_invite";//Nom du routeur sur le réseau (par Exemple FReebox-44F45)
+const char* password = "MonTraficEstJournalise"; //Mot de passe du routeur
 
 
 //Page principale

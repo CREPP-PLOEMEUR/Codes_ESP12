@@ -26,8 +26,8 @@ Il faut auparavant vérifier que l'on puisse téléverser du code sur les cartes
 
 #define NB_DATA_TEMP 60
 
-const char* ssid     = "Freebox-47689C";//Nom du routeur sur le réseau (par Exemple FReebox-44F45)
-const char* password = "oshysi5ttialourtylop"; //Mot de passe du routeur
+const char* ssid     = "nom";//Nom du routeur sur le réseau (par Exemple FReebox-44F45)
+const char* password = "password"; //Mot de passe du routeur
 
 
 //###########################Fin paramètres
