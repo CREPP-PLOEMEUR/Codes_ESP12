@@ -1,6 +1,6 @@
 # Code Serveur
 
-Ce code à pour but de créer un mini-serveur avec la carte ESP12 pour afficher la température via un DHT11/22 et controler un relais
+Ce code à pour but de créer un mini-serveur avec la carte ESP12 pour afficher la température via un DHT11/22 et contrôler un relais
 
 ## Pré-requis
 
@@ -26,7 +26,7 @@ Il faut auparavant vérifier que l'on puisse téléverser du code sur les cartes
 
 #define NB_DATA_TEMP 60
 
-const char* ssid     = "Freebox-47689C";//Nom du routeur sur le réseau (par Exemple FReebox-44F45)
+const char* ssid     = "Freebox-47689C";//Nom du routeur sur le réseau (par Exemple Freebox-44F45)
 const char* password = "oshysi5ttialourtylop"; //Mot de passe du routeur
 
 

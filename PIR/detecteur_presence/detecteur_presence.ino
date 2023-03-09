@@ -5,7 +5,7 @@
  * version 2 as published by the Free Software Foundation.
 
  * Programme pour la lecture d'un capteur de présence PIR
- * par Club de Robotique et d'Electronique Programmable de Ploemeur
+ * par Club de Robotique et d’électronique Programmable de Ploemeur
  * Autorisation de redistribuer et modifier le code sous les termes de la Licence GNU-GPL 
  */
 

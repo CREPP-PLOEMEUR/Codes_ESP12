@@ -34,6 +34,7 @@ const char* password = "MonTraficEstJournalise"; //Mot de passe du routeur
 
 #define OLED_RESET     -1 //Broche reset
 #define SCREEN_ADDRESS 0x3C ///Parfois 0x3D ou 0x3F
+
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 //Page principale
@@ -69,6 +70,12 @@ void setup() {
   if (MDNS.begin("esp8266")) {   //Multicast DNS 
     Serial.println(">>> Serveur MDNS activé");
   }
+
+  Serial.println("Connexion au reseau ");
+  Serial.println(ssid);
+  Serial.println("avec l'adresse IP : ");
+  Serial.println(WiFi.localIP());
+  
 
   server.on("/", mainPage);           //Affichage de la page principale si requête sur '/' -> saisir IP dans le navigateur
   server.onNotFound(notFoundPage);    //Affichage de la page d'erreur si adresse non valide

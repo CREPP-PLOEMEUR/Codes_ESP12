@@ -3,7 +3,7 @@
 Ce code à pour but de créer un mini-serveur avec la carte ESP12 pour allumer la LED interne de la carte via un navigateur.
 L'adresse IP du serveur est affichée sur un écran OLED dont voici le branchement :
 
-![WEB](.img/oled.png)
+![WEB](.img/esp_oled.png)
 
 ## Pré-requis
 

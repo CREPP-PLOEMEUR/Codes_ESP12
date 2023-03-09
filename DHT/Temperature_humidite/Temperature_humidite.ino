@@ -1,3 +1,14 @@
+/*
+
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * version 2 as published by the Free Software Foundation.
+
+ * Programme pour la lecture d'un capteur de température DHT11/22
+ * par Club de Robotique et d’électronique Programmable de Ploemeur
+ * Autorisation de redistribuer et modifier le code sous les termes de la Licence GNU-GPL 
+
+ */
 #include "DHT.h"
 #define DHTPIN D2     //Broche du capteur
 

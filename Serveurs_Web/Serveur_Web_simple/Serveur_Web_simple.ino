@@ -5,10 +5,10 @@
  * version 2 as published by the Free Software Foundation.
 
  * Programme pour la mise en place d'un serveur Web simple
- * par Club de Robotique et d'Electronique Programmable de Ploemeur
+ * par Club de Robotique et d’électronique Programmable de Ploemeur
  * Autorisation de redistribuer et modifier le code sous les termes de la Licence GNU-GPL 
-
  */
+ 
 #include <ESP8266WiFi.h>
 #include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>
@@ -17,14 +17,15 @@
 #define LED D4  //Broche de la LED
 
 ESP8266WebServer server(PORT);
-/*
-const char* ssid     = "creafab_invite";//Nom du routeur sur le réseau (par Exemple FReebox-44F45)
-const char* password = "MonTraficEstJournalise"; //Mot de passe du routeur
-*/
 
+
+const char* ssid     = "creafab_invite";//Nom du routeur sur le réseau (par Exemple Freebox-44F45)
+const char* password = "MonTraficEstJournalise"; //Mot de passe du routeur
+
+/*
 const char* ssid     = "name";//Nom du routeur sur le réseau (par Exemple FReebox-44F45)
 const char* password = "password"; //Mot de passe du routeur
-
+*/
 
 //Page principale
 const String minimalPageContent = "<html>\

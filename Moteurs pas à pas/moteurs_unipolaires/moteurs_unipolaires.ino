@@ -4,8 +4,8 @@
  * modify it under the terms of the GNU General Public License
  * version 2 as published by the Free Software Foundation.
 
- * Programme pour le controle d'un moteur pas à pas
- * par Club de Robotique et d'Electronique Programmable de Ploemeur
+ * Programme pour le contrôle d'un moteur pas à pas
+ * par Club de Robotique et d’électronique Programmable de Ploemeur
  * Autorisation de redistribuer et modifier le code sous les termes de la Licence GNU-GPL 
 
  */
