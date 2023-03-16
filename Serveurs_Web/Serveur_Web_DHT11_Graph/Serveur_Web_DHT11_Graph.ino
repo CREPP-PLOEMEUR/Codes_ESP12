@@ -66,7 +66,9 @@ void setup() {
   Serial.println(ssid);
   Serial.print("avec l'adresse IP : ");
   Serial.println(WiFi.localIP());
-
+  Serial.print("avec l'adresse IP : ");
+  Serial.println(WiFi.localIP());
+  
   if (MDNS.begin("esp8266")) {   //Multicast DNS 
     Serial.println(">>> Serveur MDNS activé");
   }

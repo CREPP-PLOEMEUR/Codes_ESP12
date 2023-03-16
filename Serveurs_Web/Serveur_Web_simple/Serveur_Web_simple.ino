@@ -49,9 +49,13 @@ const String fullPageContent = "<html>\
   </head>\
   <body style=\"margin-left:5%;\">\
     <h1>Led ESP8266</h1><br>\
+    <p>   Cet atelier porte sur les NodeMCU</p> \
+    Ceci est du texte  \
     <h3>Contrôle de la LED sur la broche <span class=\"badge badge-secondary\">D4</span></h3><br>\
+    <h4>Sous-sous-sous titre</span></h4><br>\
       <a href=\"/?LED=ON\"><button class=\"btn btn-success\">Allumer</button></a>\
       <a href=\"/?LED=OFF\"><button class=\"btn btn-danger\">Eteindre</button></a>\
+      <a href=\"/?BTN=OK\"><button class=\"btn btn-warning\">Warning</button></a>\
   </body>\
 </html>";
 
@@ -106,6 +110,10 @@ void mainPage() //Page principale
  else if(server.arg("LED")=="OFF")
  {
      digitalWrite(LED, HIGH);   //On eteint la led
+ }//Fin else if
+  else if(server.arg("BTN")=="OK")
+ {
+     Serial.println(">>> Coucou");
  }//Fin else if
  else {
   //nothing

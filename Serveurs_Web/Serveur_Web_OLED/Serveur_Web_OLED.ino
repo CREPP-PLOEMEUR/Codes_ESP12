@@ -25,7 +25,7 @@
 
 ESP8266WebServer server(PORT);
 
-const char* ssid     = "creafab_invite";//Nom du routeur sur le réseau 
+const char* ssid     = "creafab_invite";//Nom du routeur sur le réseau (par Exemple FReebox-44F45)
 const char* password = "MonTraficEstJournalise"; //Mot de passe du routeur
 
 
@@ -75,7 +75,8 @@ void setup() {
   Serial.println(ssid);
   Serial.println("avec l'adresse IP : ");
   Serial.println(WiFi.localIP());
-  
+  Serial.println("et l'adresse MAC : ");
+  Serial.println(WiFi.macAddress());
 
   server.on("/", mainPage);           //Affichage de la page principale si requête sur '/' -> saisir IP dans le navigateur
   server.onNotFound(notFoundPage);    //Affichage de la page d'erreur si adresse non valide
@@ -100,7 +101,8 @@ void setup() {
   display.println(ssid);
   display.println("avec l'adresse IP : ");
   display.println(WiFi.localIP());
-  
+  display.println("et l'adresse MAC : ");
+  display.println(WiFi.macAddress());
   display.display();   //met à jour le contenu
   
 }//Fin setup
