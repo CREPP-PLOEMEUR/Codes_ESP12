@@ -1,140 +1,140 @@
 /*
-
  * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * version 2 as published by the Free Software Foundation.
+ * modify without any restriction
+ * 
+ * This file create a web server based on ESP12 NodeMCU.
+ * You can load a page and turn-on and turn off the internal LED
+ * You can also turn-on and turn off the the D7 pin
+ * A dynamic graphic is generated on page
+ */
 
- * Programme pour le contrôle d'un serveur Web qui affiche la température et l'humidité sur une page Web avec un graphique
- * Possibilité de contrôler un relai
- * par Club de Robotique et d’Électronique Programmable de Ploemeur
-
+/*
+ *   Libraries
  */
 #include <ESP8266WiFi.h>
 #include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>
 
-#define NB_DATA_TEMP 60 //Nombre de valeur sur le graphique
-
 #include "DHT.h"
 #include "circularRing.h"
 
 
-//########################### Début Paramètres 
-#define PORT 80 //Port par défaut
-#define LED D4  //Broche de la LED
-#define RELAY D7  //Broche du relais
-#define REFRESH_PAGE_DELAY 5 //Temps de reafraichissement de la page en s
+#define PORT 80 //Default port
+#define LED D4  //LED Pin
 
-#define DHTPIN D2     //Broche du DHT11/22
+#define RELAY D7  //Relay Pin
+#define REFRESH_PAGE_DELAY 5 //Timeout before refresh
 
+#define DHTPIN D2         //Digital pin connected to the DHT sensor
+#define DHTTYPE DHT11     //Use DHT22 or DHT21
 
-//#define DHTTYPE DHT11   
-#define DHTTYPE DHT22  
-//#define DHTTYPE DHT21 
-
-const char* ssid     = "creafab_invite";//Nom du routeur sur le réseau (par Exemple FReebox-44F45)
-const char* password = "MonTraficEstJournalise"; //Mot de passe du routeur
-
-
-//###########################Fin paramètres
-
-DHT dht(DHTPIN, DHTTYPE);
-
+/*
+ *   Global variables
+ */
+const char* ssid     = "creafab_invite";          //SSID
+const char* password = "MonTraficEstJournalise";  //Password
 
 int current_index = 0;
-
-ESP8266WebServer server(PORT);
-
 float temperature = 20.0;
 float humidity = 50.0;
 
+/*
+ *   Objects
+ */
+DHT dht(DHTPIN, DHTTYPE);
+
+ESP8266WebServer server(PORT);
+
+
+
 void setup() {
   
-  pinMode(LED, OUTPUT);       //LED en sortie
-  digitalWrite(LED, LOW);     //LED éteinte
-  Serial.begin(115200);       //Communication à 115200 bits/s
+  pinMode(LED, OUTPUT);       //LED ouput
+  digitalWrite(LED, LOW);     //Turn-on LED
+  Serial.begin(115200);       //Baudrate 
   WiFi.begin(ssid, password); //Connexion
-  Serial.println("");         //Retour à la ligne
-  dht.begin();
-  
+  Serial.println("");         //New line
+
   while (WiFi.status() != WL_CONNECTED) 
   {
     delay(500);
-    Serial.println(">>> Impossible de se connecter au réseau...");
+    Serial.println(">>> Network is not available...Retry...");
   }
   
-  Serial.print(">>> Connexion au réseau ");
+  Serial.print(">>> Connected to ");
   Serial.println(ssid);
-  Serial.print("avec l'adresse IP : ");
+  Serial.print("with this IP address: ");
   Serial.println(WiFi.localIP());
+  Serial.print("and this MAC address : ");
+  Serial.println(WiFi.macAddress());
 
-  if (MDNS.begin("esp8266")) {   //Multicast DNS 
-    Serial.println(">>> Serveur MDNS activé");
+  if (MDNS.begin("esp8266")) //Multicast DNS 
+  {   
+    Serial.println(">>> Serveur MDNS : ON");
   }
 
-  server.on("/", mainPage);           //Affichage de la page principale si requête sur '/' -> saisir IP dans le navigateur
-  server.onNotFound(notFoundPage);    //Affichage de la page d'erreur si adresse non valide
+  server.on("/", mainPage);           //Display main page
+  server.onNotFound(notFoundPage);    //Display error page
 
-  server.begin();                     //Initialisation du serveur
-  Serial.println(">>> démarrage du serveur");
-  
-}//Fin setup
-
-void loop() 
-{
-  
-  server.handleClient(); //Gestion des clients sur le serveur
-  
-}//Fin loop
-
-
-void mainPage() //Page principale
-{ 
- 
-  if(server.arg("LED")=="ON") //Lecture de l'argument 'LED'
-  {
-      digitalWrite(LED, LOW); //On allume la led
-  }//Fin if
-  else if(server.arg("LED")=="OFF")
-  {
-     digitalWrite(LED, HIGH);   //On eteint la led
-  }//Fin else if
-   else if(server.arg("RELAY")=="ON")
-  {
-     digitalWrite(RELAY, LOW);   //On désactive le relai
-  }//Fin else if
-   else if(server.arg("RELAY")=="OFF")
-  {
-     digitalWrite(RELAY, HIGH);   //On active le relai
-  }//Fin else if
-  else {
-    
-  }
-
- server.send(200, "text/html", getString()); //On envoie la page principale
-
- 
-}//FIn mainPage
-
-
-void notFoundPage()  //Gestion si mauvaise URL
-{
-  server.send(404, "text/plain", "Page introuvable !\n\n");
+  server.begin();                     //Starting server
+  Serial.println(">>> Starting server");
   
 }
 
 
-String getString() {//Récupère la page
+void loop() 
+{
+  server.handleClient(); //Clients handler
+}
+
+
+void mainPage() 
+{ 
+ 
+  if(server.arg("LED")=="ON") //Reading 'LED' argument value
+  {
+      digitalWrite(LED, LOW); //Turn-on the LED
+  }
+  else if(server.arg("LED")=="OFF")
+  {
+     digitalWrite(LED, HIGH);   //Turn-off the LED
+  }
+   else if(server.arg("RELAY")=="ON")
+  {
+     digitalWrite(RELAY, LOW);   //Turn-on the relay
+  }
+   else if(server.arg("RELAY")=="OFF")
+  {
+     digitalWrite(RELAY, HIGH);   //Turn-off the relay
+  }
+  else {
+    //Nothing
+  }
+
+ server.send(200, "text/html", getString()); //Sending main page
+
+ 
+}
+
+void notFoundPage()  //Bad URL handler
+{
+  server.send(404, "text/plain", "Page not found !\n\n");
+}
+
+
+
+String getString()   //Generate main page
+{
 
   temperature = dht.readTemperature();
   humidity  = dht.readHumidity();
   
-  updateRings(&current_index, NB_DATA_TEMP, temperature, humidity); //Mise à jour des tableaux
+  updateRings(&current_index, NB_DATA_TEMP, temperature, humidity); //Update of rings
  
   String dataTemperatures = concatenateArray(temperatures, current_index);
   String dataHumidities = concatenateArray(humidities, current_index);
-  String dataReferences = concatenateArray(references, current_index); //Tableau contenant toutes les valeurs à 0, pour afficher la référence sur le graphique
-  
+  String dataReferences = concatenateArray(references, current_index); //Array with all values set up to 0
+
   String dataTime ="[";
   for (int i=current_index;i>0;i--) {
     dataTime += "'"+String(i)+"',";
@@ -144,7 +144,7 @@ String getString() {//Récupère la page
   
   const String fullPageContent = "<html>\
   <head>\
-    <title>Serveur Web CREPP</title>\
+    <title>CREPP Web Server</title>\
     <meta charset=\"utf-8\"/> \
     <meta http-equiv=\"refresh\" content=\""+String(REFRESH_PAGE_DELAY)+"\">\
     <link rel=\"stylesheet\" href=\"https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css\" integrity=\"sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T\" crossorigin=\"anonymous\">\
@@ -152,16 +152,16 @@ String getString() {//Récupère la page
     </head>\
   <body style=\"margin-left:5%;\">\
     <h1>Interface ESP12</h1><br>\
-    <h3>Contrôle de la LED sur la broche <span class=\"badge badge-secondary\">D4</span></h3><br>\
-      <a href=\"/?LED=ON\"><button class=\"btn btn-success\">Allumer</button></a>\
-      <a href=\"/?LED=OFF\"><button class=\"btn btn-danger\">Eteindre</button></a><br><br>\
-   <h3>Contrôle du relai sur la broche <span class=\"badge badge-secondary\">D7</span></h3><br>\
-      <a href=\"/?RELAY=ON\"><button class=\"btn btn-success\">Activer</button></a>\
-      <a href=\"/?RELAY=OFF\"><button class=\"btn btn-danger\">Désactiver</button></a><br><br>\
-    <h3>Mesure de la température et humidité avec le module DHT11 sur la broche <span class=\"badge badge-secondary\">D2</span></h3><br>\
+    <h3>LED control on <span class=\"badge badge-secondary\">D4</span>Pin </h3> <br>\
+      <a href=\"/?LED=ON\"><button class=\"btn btn-success\">Turn-on</button></a>\
+      <a href=\"/?LED=OFF\"><button class=\"btn btn-danger\">Turn-off</button></a><br><br>\
+   <h3>Relay control on <span class=\"badge badge-secondary\">D7</span> Pin </h3><br>\
+      <a href=\"/?RELAY=ON\"><button class=\"btn btn-success\">Turn-on</button></a>\
+      <a href=\"/?RELAY=OFF\"><button class=\"btn btn-danger\">Turn-off</button></a><br><br>\
+    <h3>Temperature and humidity measurements with DHT11 sensor on <span class=\"badge badge-secondary\">D2</span> pin</h3><br>\
       <br>\
-      >>> <b>Température</b> : "+String(temperature)+" °C<br>\
-      >>> <b>Humidité</b> : "+String(humidity)+"%\
+      >>> <b>Temperature</b> : "+String(temperature)+" °C<br>\
+      >>> <b>Humidity</b> : "+String(humidity)+"%\
       <div style='max-width:40%;'><canvas id=\"myChart\" width=\"600\" height=\"450\"></canvas></div> \
         <script> \
 var ctx = document.getElementById('myChart'); \

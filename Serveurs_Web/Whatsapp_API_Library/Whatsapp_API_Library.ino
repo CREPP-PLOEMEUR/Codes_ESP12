@@ -1,20 +1,18 @@
-
 /*
  * This program is free software; you can redistribute it and/or
  * modify without any restriction
  * 
  * This file generate web server and send message on Whatsapp when temperature on DHT22 or DHT11
  * device is higher than a target value
- */
-
-/*
- *   Libraries
+ *
  */
 #include <ESP8266WiFi.h>
 #include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>
 
 #include "DHT.h"
+#include "Web_Tools.h"  //Personnal library
+
 
 /*
  *   Macros
@@ -26,15 +24,27 @@
 
 #define DHTPIN D2         //Digital pin connected to the DHT sensor
 #define DHTTYPE DHT11     //Use DHT22 or DHT21
+#define MAX_TEMPERATURE_ALLOWED 16
+
+#define PHONE_NUMBER "+33620887512"
+#define API_KEY "1382181"
 
 /*
  *   Global variables
  */
-float temperature = 20.0;
-float humidity = 50.0;
 
 const char* ssid     = "creafab_invite";          //SSID
 const char* password = "MonTraficEstJournalise";  //Password
+
+
+
+
+float temperature = 20.0;
+float humidity = 50.0;
+
+bool overTemperature = false;   //true when temp over target
+
+
 
 const String minimalPageContent = "<html>\
   <head>\
@@ -49,11 +59,17 @@ const String minimalPageContent = "<html>\
   </body>\
 </html>";
 
+
 /*
  *   Objects
  */
+
 DHT dht(DHTPIN, DHTTYPE);
+
 ESP8266WebServer server(PORT);
+
+Web_Tools Web_device = Web_Tools();
+
 
 
 void setup() {
@@ -89,15 +105,23 @@ void setup() {
 
   server.begin();                     //Starting server
   Serial.println(">>> Starting server");
+
+  temperature = dht.readTemperature();
+  humidity  = dht.readHumidity();
+
+  Web_device.initWhatsapp_API(PHONE_NUMBER, API_KEY);
   
+  if(Web_device.sendMessage("Boot of ESP32 on "+Web_device.ipAddress2String(WiFi.localIP())+"\nTemperature : "+String(temperature)+" °C\n"+"Humidity : "+String(humidity)+" %") == Whatsapp_OK)
+  {
+    Serial.println("Message sent !");
+  }
+
 }
 
 void loop() 
 {
   server.handleClient(); //Clients handler
 }
-
-
 
 void mainPage() 
 { 
@@ -110,6 +134,14 @@ void mainPage()
  {
      digitalWrite(LED, HIGH);       //Turn-off LED
  }
+ else if(server.arg("UPDATE")=="1")
+ {
+  server.send(200, "text/html", getString()); //Update main page
+ }
+ else if(server.arg("REBOOT")=="1")
+ {
+   ESP.restart();
+ }
  else {
   //nothing
  }
@@ -119,9 +151,11 @@ void mainPage()
 }
 
 
-void notFoundPage()  //Bad URL handler
+
+void notFoundPage()  //Gestion si mauvaise URL
 {
-  server.send(404, "text/plain", "Page not found !\n\n");
+  server.send(404, "text/plain", "Page introuvable !\n\n");
+  
 }
 
 
@@ -134,6 +168,19 @@ String getString()   //Generate main page
   Serial.println(">>> Temperature = "+String(temperature));
   Serial.println(">>> Humidity = "+String(humidity));
 
+  if(temperature >= MAX_TEMPERATURE_ALLOWED)
+  {
+    if(overTemperature == false)
+    {
+      Web_device.sendMessage("Temperature higher than target at "+String(MAX_TEMPERATURE_ALLOWED)+ " °C");
+      overTemperature = true;
+    }
+  }
+  else 
+  {
+    overTemperature = false;
+  }
+  
   const String fullPageContent = "<html>\
   <head>\
     <title>CREPP Web Server</title>\
@@ -148,6 +195,7 @@ String getString()   //Generate main page
       <a href=\"/?LED=OFF\"><button class=\"btn btn-danger\">Turn-off</button></a><br><br>\
     <h3>Temperature and humidity measurements with DHT11 sensor on <span class=\"badge badge-secondary\">D2</span> pin</h3><br>\
       <a href=\"/?UPDATE=1\"><button class=\"btn btn-primary\">Update</button></a><br><br>\
+      <a href=\"/?REBOOT=1\"><button class=\"btn btn-warning\">Restart ESP12 NodeMCU</button></a><br><br>\
       >>> <b>Temperature</b> : "+String(temperature)+" °C<br>\
       >>> <b>Humidity</b> : "+String(humidity)+"%\
   </body>\
@@ -156,3 +204,4 @@ String getString()   //Generate main page
 return fullPageContent;
 
 }
+

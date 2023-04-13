@@ -1,4 +1,3 @@
-
 /*
  * This program is free software; you can redistribute it and/or
  * modify without any restriction
@@ -13,6 +12,9 @@
 #include <ESP8266WiFi.h>
 #include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>
+#include <ESP8266HTTPClient.h>
+#include <WiFiClient.h>
+#include <UrlEncode.h>
 
 #include "DHT.h"
 
@@ -26,12 +28,18 @@
 
 #define DHTPIN D2         //Digital pin connected to the DHT sensor
 #define DHTTYPE DHT11     //Use DHT22 or DHT21
+#define MAX_TEMPERATURE_ALLOWED 20
+
+#define PHONE_NUMBER "+33620887512"
+#define API_KEY "1382181"
 
 /*
  *   Global variables
  */
 float temperature = 20.0;
 float humidity = 50.0;
+
+bool overTemperature = false; //true when temp over target
 
 const char* ssid     = "creafab_invite";          //SSID
 const char* password = "MonTraficEstJournalise";  //Password
@@ -55,6 +63,28 @@ const String minimalPageContent = "<html>\
 DHT dht(DHTPIN, DHTTYPE);
 ESP8266WebServer server(PORT);
 
+WiFiClient client;    
+HTTPClient http;
+
+void sendMessage(String message){
+
+  String baseURL = "http://api.callmebot.com/whatsapp.php?phone=" + String(PHONE_NUMBER) + "&apikey=" + String(API_KEY) + "&text=" + urlEncode(message);
+  http.begin(client, baseURL);
+
+  http.addHeader("Content-Type", "application/x-www-form-urlencoded");
+  
+  int httpResponse = http.POST(baseURL);
+
+  if (httpResponse == 200)
+  {
+    Serial.print("Message sent !");
+  }
+  else
+  {
+    Serial.println("Fail when sending the message [Code = "+String(httpResponse)+"]");
+  }
+
+}
 
 void setup() {
   
@@ -110,6 +140,10 @@ void mainPage()
  {
      digitalWrite(LED, HIGH);       //Turn-off LED
  }
+ else if(server.arg("UPDATE")=="1")
+ {
+  server.send(200, "text/html", getString()); //Update main page
+ }
  else {
   //nothing
  }
@@ -134,6 +168,19 @@ String getString()   //Generate main page
   Serial.println(">>> Temperature = "+String(temperature));
   Serial.println(">>> Humidity = "+String(humidity));
 
+  if(temperature >= MAX_TEMPERATURE_ALLOWED)
+  {
+    if(overTemperature == false)
+    {
+      sendMessage("Temperature is higher than target ! Target at "+String(MAX_TEMPERATURE_ALLOWED)+ " °C");
+      overTemperature = true;
+    }
+  }
+  else 
+  {
+    overTemperature = false;
+  }
+  
   const String fullPageContent = "<html>\
   <head>\
     <title>CREPP Web Server</title>\

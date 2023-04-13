@@ -1,14 +1,13 @@
 /*
-
  * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * version 2 as published by the Free Software Foundation.
-
- * Programme pour le contrôle d'un serveur Web qui récupère l'adresse MAC de l'ESP
- * par Club de Robotique et d'Électronique Programmable de Ploemeur
-
+ * modify without any restriction
+ * 
+ * This file get the MAC address of ESP12 NodeMCU device
  */
 
+/*
+ *   Libraries
+ */
 #include <ESP8266WiFi.h>
 
 void setup()
