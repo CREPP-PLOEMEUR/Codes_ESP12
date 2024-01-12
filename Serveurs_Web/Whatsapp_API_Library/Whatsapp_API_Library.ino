@@ -17,7 +17,7 @@
 /*
  *   Macros
  */
-#define PORT    80        //Default port
+#define PORT    9090        //Default port
 #define REFRESH_PAGE_DELAY 5 //Timeout before refresh
 
 #define LED     D4        //LED Pin
@@ -26,15 +26,15 @@
 #define DHTTYPE DHT11     //Use DHT22 or DHT21
 #define MAX_TEMPERATURE_ALLOWED 16
 
-#define PHONE_NUMBER "++33666666666"
+#define PHONE_NUMBER "+33620887512" //"+33666666666"
 #define API_KEY "1382181"
 
 /*
  *   Global variables
  */
 
-const char* ssid     = "creafab_invite";          //SSID
-const char* password = "MonTraficEstJournalise";  //Password
+const char* ssid     = "Freebox-47689C";          //SSID
+const char* password = "oshysi5ttialourtylop";  //Password
 
 
 
