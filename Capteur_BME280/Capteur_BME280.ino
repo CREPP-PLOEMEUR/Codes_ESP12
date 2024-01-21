@@ -1,10 +1,10 @@
 #include <Wire.h>   //Bibliothèque pour communication I2C
 
 #include <Adafruit_Sensor.h>
-#include <Adafruit_BME280.h>
+#include "Adafruit_BME280.h"
 
 
-#define SEALEVELPRESSURE_HPA (1013.25)  //Pression au niveau de la mer
+#define SEALEVELPRESSURE_HPA (1013.25)  //Pression au niveau de la mer  
 
 Adafruit_BME280 bme; //Créer un objet bme
 
