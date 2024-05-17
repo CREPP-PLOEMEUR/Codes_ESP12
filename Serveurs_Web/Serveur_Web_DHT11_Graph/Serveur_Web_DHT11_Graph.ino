@@ -7,6 +7,13 @@
  * A dynamic graphic is generated on page
  */
 
+/*!
+
+  NE PAS OUBLIER D'AJOUTER LE FICHIER 'circularRing.h' A COTÉ DE CE FICHIER .INO
+  LE FICHIER EST DISPONIBLE À L'ADRESSE SUIVANTE : 
+  https://github.com/CREPP-PLOEMEUR/Codes_ESP12/blob/master/Serveurs_Web/Serveur_Web_DHT11_Graph/circularRing.h
+*/
+
 /*
  *   Libraries
  */
