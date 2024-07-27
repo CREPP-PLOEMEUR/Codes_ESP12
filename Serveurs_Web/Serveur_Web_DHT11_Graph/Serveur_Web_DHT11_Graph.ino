@@ -54,6 +54,7 @@ ESP8266WebServer server(PORT);
 
 void setup() {
   
+  dht.begin();
   pinMode(LED, OUTPUT);       //LED ouput
   digitalWrite(LED, LOW);     //Turn-on LED
   Serial.begin(115200);       //Baudrate 
@@ -125,6 +126,11 @@ String getString()   //Generate main page
 
   temperature = dht.readTemperature();
   humidity  = dht.readHumidity();
+
+
+  Serial.println(temperature);
+  Serial.println(humidity);
+  
   
   updateRings(&current_index, NB_DATA_TEMP, temperature, humidity); //Update of rings
  

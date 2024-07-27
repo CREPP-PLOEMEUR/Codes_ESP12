@@ -10,7 +10,7 @@
 #include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>
 
-#include "DHT.h"
+//#include "DHT.h"
 #include "Web_Tools.h"  //Personnal library
 
 
@@ -33,8 +33,8 @@
  *   Global variables
  */
 
-const char* ssid     = "Freebox-47689C";          //SSID
-const char* password = "oshysi5ttialourtylop";  //Password
+const char* ssid     = "SFR_8A40";          //SSID
+const char* password = "biosdu56";  //Password
 
 
 
@@ -64,7 +64,7 @@ const String minimalPageContent = "<html>\
  *   Objects
  */
 
-DHT dht(DHTPIN, DHTTYPE);
+//DHT dht(DHTPIN, DHTTYPE);
 
 ESP8266WebServer server(PORT);
 
@@ -80,7 +80,7 @@ void setup() {
   WiFi.begin(ssid, password); //Connexion
   Serial.println("");         //New line
 
-  dht.begin();
+  //dht.begin();
   
   while (WiFi.status() != WL_CONNECTED) 
   {
@@ -100,20 +100,31 @@ void setup() {
     Serial.println(">>> Serveur MDNS : ON");
   }
 
+  Web_device.initWhatsapp_API(PHONE_NUMBER, API_KEY);
+  
+  if(Web_device.sendMessage("Boot of ESP32 on "+Web_device.ipAddress2String(WiFi.localIP())+"\nTemperature : "+String(temperature)+" °C\n"+"Humidity : "+String(humidity)+" %") == Whatsapp_OK)
+  {
+    Serial.println("Message sent !");
+  }
+
   server.on("/", mainPage);           //Display main page
   server.onNotFound(notFoundPage);    //Display error page
 
   server.begin();                     //Starting server
   Serial.println(">>> Starting server");
 
-  temperature = dht.readTemperature();
-  humidity  = dht.readHumidity();
+  //temperature = dht.readTemperature();
+  //humidity  = dht.readHumidity();
 
   Web_device.initWhatsapp_API(PHONE_NUMBER, API_KEY);
   
   if(Web_device.sendMessage("Boot of ESP32 on "+Web_device.ipAddress2String(WiFi.localIP())+"\nTemperature : "+String(temperature)+" °C\n"+"Humidity : "+String(humidity)+" %") == Whatsapp_OK)
   {
     Serial.println("Message sent !");
+  }
+  else
+  {
+     Serial.println("Message no sent !");
   }
 
 }
@@ -162,9 +173,9 @@ void notFoundPage()  //Gestion si mauvaise URL
 String getString()   //Generate main page
 {
   //get temperature
-  temperature = dht.readTemperature();
-  humidity  = dht.readHumidity();
-  
+  //temperature = dht.readTemperature();
+  //humidity  = dht.readHumidity();
+  /*
   Serial.println(">>> Temperature = "+String(temperature));
   Serial.println(">>> Humidity = "+String(humidity));
 
@@ -180,6 +191,7 @@ String getString()   //Generate main page
   {
     overTemperature = false;
   }
+  
   
   const String fullPageContent = "<html>\
   <head>\
@@ -202,6 +214,7 @@ String getString()   //Generate main page
 </html>";
 
 return fullPageContent;
+*/
+return "";
 
 }
-
