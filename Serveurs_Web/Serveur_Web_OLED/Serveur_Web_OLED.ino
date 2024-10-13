@@ -68,12 +68,22 @@ void setup() {
   WiFi.begin(ssid, password); //Connexion
   Serial.println("");         //New line
 
+  display.display(); //Display Adafruit symbol
+  delay(500); 
+  display.clearDisplay(); //Clear screen
+
+  display.setTextSize(1);               //Size factor
+  //display.setTextColor(SSD1306_WHITE);  //White text
+  display.setCursor(0, 0);              //Set cursor to (0,0)
   
-  while (WiFi.status() != WL_CONNECTED) 
+  display.print("WAITING NETWORK...");
+
+  
+  /*while (WiFi.status() != WL_CONNECTED) 
   {
     delay(500);
     Serial.println(">>> Network is not available...Retry...");
-  }
+  }*/
   
   Serial.print(">>> Connected to ");
   Serial.println(ssid);
@@ -94,17 +104,16 @@ void setup() {
   Serial.println(">>> Starting server");
 
 
-  if(!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS)) {
+  /*if(!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS)) {
     Serial.println(F("Echec OLED"));
-    for(;;); 
-  }
+  }*/
 
   display.display(); //Display Adafruit symbol
   delay(500); 
   display.clearDisplay(); //Clear screen
 
   display.setTextSize(1);               //Size factor
-  display.setTextColor(SSD1306_WHITE);  //White text
+  //display.setTextColor(SSD1306_WHITE);  //White text
   display.setCursor(0, 0);              //Set cursor to (0,0)
   
   display.print(">>> Connected to ");
@@ -156,4 +165,3 @@ void notFoundPage()  //Bad URL handler
 {
   server.send(404, "text/plain", "Page not found !\n\n");
 }
-
